@@ -3,7 +3,7 @@ info:
   title: Demography
   description:
     Test demography analytics REST API specification and fully-functional client. OpenAPI 3.0 YAML source can be found [here](https://github.com/barpav/demography-api/blob/main/demography-api.yaml).
-  version: 0.2.0
+  version: 0.3.0
 servers:
   - url: http://localhost/v1
 tags:
@@ -41,6 +41,59 @@ paths:
                 example: Person's name must be specified.
           '415':
             description: Unsupported new person data (media type).
+    get:
+      tags:
+        - people
+      summary: Search by person data
+      parameters:
+        - name: surname
+          in: query
+          schema:
+            type: string
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: patronymic
+          in: query
+          schema:
+            type: string
+        - name: age
+          in: query
+          schema:
+            type: integer
+        - name: gender
+          in: query
+          schema:
+            type: string
+        - name: country
+          in: query
+          schema:
+            type: string
+        - name: after
+          in: query
+          description: Person id.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of people to return (min 1, max 100, default 30).
+          schema:
+            type: integer
+      responses:
+          '200':
+            description: Success.
+            content:
+              application/vnd.searchResult.v1+json:
+                schema:
+                  $ref: '#/components/schemas/searchResult.v1'
+          '400':
+            description: Incorrect parameters.
+            content:
+              text/plain; charset=utf-8:
+                example: "Invalid parameter 'limit': min 1, max 100."
+          '406':
+            description: Requested media type is not supported ("Accept" header).
 
   /people/{id}:
     get:
@@ -92,9 +145,13 @@ components:
     enrichedPersonData.v1:
       type: object
       required:
+        - id
         - surname
         - name
       properties:
+        id:
+          type: integer
+          example: 2719
         surname:
           type: string
           example: Ushakov
@@ -119,4 +176,15 @@ components:
         country:
           type: string
           example: RU
-    
+    searchResult.v1:
+      type: object
+      required:
+        - total
+      properties:
+        total:
+          type: integer
+          example: 1
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/enrichedPersonData.v1'
