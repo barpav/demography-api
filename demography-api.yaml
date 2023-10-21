@@ -1,0 +1,67 @@
+openapi: 3.0.3
+info:
+  title: Demography
+  description:
+    Test demography analytics REST API specification and fully-functional client. OpenAPI 3.0 YAML source can be found [here](https://github.com/barpav/demography-api/blob/main/demography-api.yaml).
+  version: 0.1.0
+servers:
+  - url: http://localhost/v1
+tags:
+  - name: people
+    description: Person data management and analytics
+    externalDocs:
+      description: Source code
+      url: https://github.com/barpav/demography
+paths:
+  /people:
+    post:
+        tags:
+          - people
+        summary: Add new person
+        security: [] # No security
+        requestBody:
+          description: New person data.
+          content:
+            application/vnd.personData.v1+json:
+              schema:
+                $ref: '#/components/schemas/personData.v1'
+          required: true
+        responses:
+          '201':
+            description: New person data has been added successfully.
+            headers:
+              Location:
+                description: New person data relative location in format "/{id}"
+                schema:
+                  type: string
+          '400':
+            description: Incorrect new person data.
+            content:
+              text/plain; charset=utf-8:
+                example: Person's name must be specified.
+          '415':
+            description: Unsupported new person data (media type).
+
+components:
+  schemas:
+    personData.v1:
+      type: object
+      required:
+        - surname
+        - name
+      properties:
+        surname:
+          type: string
+          example: Ushakov
+          minLength: 1
+          maxLength: 150
+        name:
+          type: string
+          example: Dmitriy
+          minLength: 1
+          maxLength: 150
+        patronymic:
+          type: string
+          example: Vasilevich
+          minLength: 1
+          maxLength: 150
