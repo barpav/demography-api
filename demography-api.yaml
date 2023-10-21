@@ -3,7 +3,7 @@ info:
   title: Demography
   description:
     Test demography analytics REST API specification and fully-functional client. OpenAPI 3.0 YAML source can be found [here](https://github.com/barpav/demography-api/blob/main/demography-api.yaml).
-  version: 0.1.0
+  version: 0.2.0
 servers:
   - url: http://localhost/v1
 tags:
@@ -42,6 +42,30 @@ paths:
           '415':
             description: Unsupported new person data (media type).
 
+  /people/{id}:
+    get:
+      tags:
+        - people
+      summary: Get person data
+      parameters:
+        - name: id
+          in: path
+          description: Person id to receive.
+          required: true
+          schema:
+            type: integer
+      responses:
+          '200':
+            description: Success.
+            content:
+              application/vnd.enrichedPersonData.v1+json:
+                schema:
+                  $ref: '#/components/schemas/enrichedPersonData.v1'
+          '404':
+            description: Person not found.
+          '406':
+            description: Requested media type is not supported ("Accept" header).
+
 components:
   schemas:
     personData.v1:
@@ -65,3 +89,34 @@ components:
           example: Vasilevich
           minLength: 1
           maxLength: 150
+    enrichedPersonData.v1:
+      type: object
+      required:
+        - surname
+        - name
+      properties:
+        surname:
+          type: string
+          example: Ushakov
+          minLength: 1
+          maxLength: 150
+        name:
+          type: string
+          example: Dmitriy
+          minLength: 1
+          maxLength: 150
+        patronymic:
+          type: string
+          example: Vasilevich
+          minLength: 1
+          maxLength: 150
+        age:
+          type: integer
+          example: 43
+        gender:
+          type: string
+          enum: [male, female]
+        country:
+          type: string
+          example: RU
+    
