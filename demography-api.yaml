@@ -3,7 +3,7 @@ info:
   title: Demography
   description:
     Test demography analytics REST API specification and fully-functional client. OpenAPI 3.0 YAML source can be found [here](https://github.com/barpav/demography-api/blob/main/demography-api.yaml).
-  version: 0.4.0
+  version: 0.5.0
 servers:
   - url: http://localhost/v1
 tags:
@@ -117,6 +117,36 @@ paths:
             description: Person not found.
           '406':
             description: Requested media type is not supported ("Accept" header).
+    put:
+        tags:
+          - people
+        summary: Edit person data
+        parameters:
+        - name: id
+          in: path
+          description: Person data id to edit.
+          required: true
+          schema:
+            type: integer
+        requestBody:
+          description: New person data.
+          content:
+            application/vnd.editedPersonData.v1+json:
+              schema:
+                $ref: '#/components/schemas/editedPersonData.v1'
+          required: true
+        responses:
+          '200':
+            description: Person data has been edited successfully.
+          '400':
+            description: Incorrect person data.
+            content:
+              text/plain; charset=utf-8:
+                example: Person's name must be specified.
+          '404':
+            description: Person not found.
+          '415':
+            description: Unsupported person data (media type).
 
 components:
   schemas:
@@ -187,3 +217,33 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/enrichedPersonData.v1'
+    editedPersonData.v1:
+      type: object
+      required:
+        - surname
+        - name
+      properties:
+        surname:
+          type: string
+          example: Dmitriev
+          minLength: 1
+          maxLength: 150
+        name:
+          type: string
+          example: Dmitriy
+          minLength: 1
+          maxLength: 150
+        patronymic:
+          type: string
+          example: Vasilevich
+          minLength: 1
+          maxLength: 150
+        age:
+          type: integer
+          example: 50
+        gender:
+          type: string
+          enum: [male, female]
+        country:
+          type: string
+          example: RU
