@@ -3,7 +3,7 @@ info:
   title: Demography
   description:
     Test demography analytics REST API specification and fully-functional client. OpenAPI 3.0 YAML source can be found [here](https://github.com/barpav/demography-api/blob/main/demography-api.yaml).
-  version: 0.6.0
+  version: 0.7.0
 servers:
   - url: http://localhost/v1
 tags:
@@ -18,13 +18,12 @@ paths:
         tags:
           - people
         summary: Add new person
-        security: [] # No security
         requestBody:
           description: New person data.
           content:
-            application/vnd.personData.v1+json:
+            application/vnd.newPersonData.v1+json:
               schema:
-                $ref: '#/components/schemas/personData.v1'
+                $ref: '#/components/schemas/newPersonData.v1'
           required: true
         responses:
           '201':
@@ -166,7 +165,7 @@ paths:
 
 components:
   schemas:
-    personData.v1:
+    newPersonData.v1:
       type: object
       required:
         - surname
