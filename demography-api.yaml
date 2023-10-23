@@ -3,9 +3,12 @@ info:
   title: Demography
   description:
     Test demography analytics REST API specification and fully-functional client. OpenAPI 3.0 YAML source can be found [here](https://github.com/barpav/demography-api/blob/main/demography-api.yaml).
-  version: 0.7.1
+  version: 0.8.0
 servers:
-  - url: http://localhost/v1
+  - url: http://localhost:{port}/v1
+    variables:
+      port:
+        default: '8080'
 tags:
   - name: people
     description: Person data management and analytics
