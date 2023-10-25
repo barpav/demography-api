@@ -2,8 +2,8 @@ openapi: 3.0.3
 info:
   title: Demography
   description:
-    Test demography analytics REST API specification and fully-functional client. OpenAPI 3.0 YAML source can be found [here](https://github.com/barpav/demography-api/blob/main/demography-api.yaml).
-  version: 0.8.0
+    "[Test task](https://github.com/barpav/demography) REST API specification and fully-functional client. OpenAPI 3.0 YAML source can be found [here](https://github.com/barpav/demography-api/blob/main/demography-api.yaml)."
+  version: 1.0.0
 servers:
   - url: http://localhost:{port}/v1
     variables:
@@ -11,7 +11,7 @@ servers:
         default: '8080'
 tags:
   - name: people
-    description: Person data management and analytics
+    description: People data management and analytics
     externalDocs:
       description: Source code
       url: https://github.com/barpav/demography
@@ -45,7 +45,7 @@ paths:
     get:
       tags:
         - people
-      summary: Search by person data
+      summary: Search by data
       parameters:
         - name: surname
           in: query
@@ -131,7 +131,7 @@ paths:
           schema:
             type: integer
         requestBody:
-          description: New person data.
+          description: Edited person data.
           content:
             application/vnd.editedPersonData.v1+json:
               schema:
