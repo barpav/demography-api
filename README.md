@@ -1,1 +1,1 @@
-This repo contains OpenAPI specification of the Demography test task. Swagger UI version [available here](https://barpav.github.io/demography-api).
+This repo contains OpenAPI specification of the [Demography test task](https://github.com/barpav/demography). Swagger UI version [available here](https://barpav.github.io/demography-api).
